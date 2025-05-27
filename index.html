@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crochet Pattern Challenge</title>
+  
+  <!-- Preload fonts for faster rendering -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Reset and base styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    :root {
+      --background: #F7F4FB;
+      --foreground: #463366;
+      --muted: #E9E2F5;
+      --muted-foreground: #6C5A8A;
+      --primary: #8B5FBF;
+      --primary-foreground: #FFFFFF;
+      --secondary: #D98CB3;
+      --secondary-foreground: #FFFFFF;
+      --accent: #F2C94C;
+      --accent-foreground: #463366;
+      --border: #D9CFF2;
+      --input: #D9CFF2;
+      --ring: #8B5FBF;
+      --radius: 0.5rem;
+      
+      --chart-1: #8B5FBF;
+      --chart-2: #D98CB3;
+      --chart-3: #F2C94C;
+      --chart-4: #56CCF2;
+      --chart-5: #6FCF97;
+      
+      --font-sans: 'Open Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-heading: 'Quicksand', var(--font-sans);
+    }
+    
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Header styles */
+    .header {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .header h1 {
+      font-family: var(--font-heading);
+      font-size: 1.875rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .header-button {
+      background: none;
+      border: none;
+      color: var(--primary-foreground);
+      padding: 0.5rem;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .header-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .header-button svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--background);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      max-width: 28rem;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--muted-foreground);
+    }
+
+    .modal-section {
+      margin-bottom: 1rem;
+    }
+
+    .modal-section h4 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--foreground);
+    }
+
+    .modal-section ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+      margin: 0;
+    }
+
+    .modal-section li {
+      margin-bottom: 0.25rem;
+    }
+
+    .info-box {
+      background-color: rgba(139, 95, 191, 0.1);
+      padding: 0.75rem;
+      border-radius: var(--radius);
+      margin-top: 1rem;
+    }
+
+    .info-box p {
+      font-size: 0.75rem;
+      margin: 0;
+    }
+
+    /* Main content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+
+    .game-container {
+      width: 100%;
+      max-width: 800px;
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Welcome screen */
+    .welcome-screen {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(rgba(247, 244, 251, 0.9), rgba(247, 244, 251, 0.9)), url('https://www.stylishknitting.com/wp-content/uploads/2025/05/colorful-crochet-supplies.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .welcome-title {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .welcome-subtitle {
+      font-size: 1.125rem;
+      color: var(--muted-foreground);
+      margin-bottom: 2rem;
+    }
+
+    .difficulty-section {
+      margin-bottom: 2rem;
+    }
+
+    .difficulty-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--foreground);
+    }
+
+    .difficulty-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .difficulty-button {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid var(--border);
+      background: white;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+
+    .difficulty-button:hover {
+      border-color: var(--primary);
+      background-color: var(--muted);
+    }
+
+    .difficulty-button.selected {
+      border-color: var(--primary);
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .start-button {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .start-button:hover {
+      background-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .start-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Game screen */
+    .game-screen {
+      padding: 2rem;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      background-color: var(--muted);
+      border-radius: 4px;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .question-number {
+      font-weight: 600;
+      color: var(--muted-foreground);
+    }
+
+    .score {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .question-content {
+      margin-bottom: 2rem;
+    }
+
+    .question-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--foreground);
+    }
+
+    .question-text {
+      color: var(--muted-foreground);
+      margin-bottom: 1.5rem;
+    }
+
+    .question-image {
+      width: 100%;
+      max-width: 400px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      margin: 0 auto 1.5rem;
+      display: block;
+      border: 1px solid var(--border);
+    }
+
+    .options {
+      display: grid;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .option {
+      padding: 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: all 0.2s;
+      background: white;
+    }
+
+    .option:hover {
+      border-color: var(--primary);
+      background-color: var(--muted);
+    }
+
+    .option.selected {
+      border-color: var(--primary);
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .game-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .button {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .button-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .button-secondary {
+      background-color: var(--muted);
+      color: var(--foreground);
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Feedback overlay */
+    .feedback-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .feedback-content {
+      background: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .feedback-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
+
+    .feedback-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .feedback-explanation {
+      color: var(--muted-foreground);
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .fun-fact {
+      background-color: var(--muted);
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .fun-fact-title {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Results screen */
+    .results-screen {
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .results-title {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .results-score {
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .results-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .result-item {
+      padding: 1rem;
+      background-color: var(--muted);
+      border-radius: var(--radius);
+    }
+
+    .result-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .result-label {
+      color: var(--muted-foreground);
+      font-size: 0.875rem;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      margin: 1rem 0;
+    }
+
+    .badge-excellent {
+      background-color: #10B981;
+      color: white;
+    }
+
+    .badge-good {
+      background-color: #F59E0B;
+      color: white;
+    }
+
+    .badge-fair {
+      background-color: #EF4444;
+      color: white;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 0.5rem;
+      }
+
+      .header h1 {
+        font-size: 1.5rem;
+      }
+
+      .welcome-title {
+        font-size: 2rem;
+      }
+
+      .difficulty-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .difficulty-button {
+        width: 200px;
+      }
+
+      .game-screen {
+        padding: 1rem;
+      }
+
+      .results-details {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Loading spinner */
+    .spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Confetti animation */
+    .confetti {
+      position: fixed;
+      top: -10px;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      animation: confetti-fall 3s linear forwards;
+      z-index: 1000;
+    }
+
+    @keyframes confetti-fall {
+      0% {
+        transform: translateX(-50%) translateY(0) rotateZ(0deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(-50%) translateY(100vh) rotateZ(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Hide elements by default */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="crochet-game-app">
+    <!-- Header -->
+    <header class="header">
+      <div class="container">
+        <div class="header-content">
+          <h1>Crochet Pattern Challenge</h1>
+          <div class="header-buttons">
+            <!-- Help Button -->
+            <button class="header-button" onclick="openModal('helpModal')" title="Help">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </button>
+            <!-- Settings Button -->
+            <button class="header-button" onclick="openModal('settingsModal')" title="Settings">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="container">
+        <div class="game-container">
+          <!-- Welcome Screen -->
+          <div id="welcomeScreen" class="welcome-screen">
+            <h2 class="welcome-title">Welcome to Crochet Pattern Challenge!</h2>
+            <p class="welcome-subtitle">Test your crochet knowledge with fun questions and visual challenges</p>
+            
+            <div class="difficulty-section">
+              <h3 class="difficulty-title">Choose Your Level:</h3>
+              <div class="difficulty-buttons">
+                <button class="difficulty-button selected" data-difficulty="beginner">Beginner</button>
+                <button class="difficulty-button" data-difficulty="intermediate">Intermediate</button>
+                <button class="difficulty-button" data-difficulty="advanced">Advanced</button>
+              </div>
+            </div>
+
+            <button class="start-button" onclick="startGame()">
+              <span id="startButtonText">Start Challenge</span>
+            </button>
+          </div>
+
+          <!-- Game Screen -->
+          <div id="gameScreen" class="game-screen hidden">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="question-header">
+              <span class="question-number" id="questionNumber">Question 1 of 10</span>
+              <span class="score" id="gameScore">Score: 0</span>
+            </div>
+
+            <div class="question-content">
+              <h3 class="question-title" id="questionTitle">Loading question...</h3>
+              <p class="question-text" id="questionText"></p>
+              <img id="questionImage" class="question-image" src="" alt="" style="display: none;">
+            </div>
+
+            <div class="options" id="optionsContainer">
+              <!-- Options will be populated by JavaScript -->
+            </div>
+
+            <div class="game-actions">
+              <button class="button button-secondary" onclick="skipQuestion()">Skip</button>
+              <button class="button button-primary" id="submitButton" onclick="submitAnswer()" disabled>Submit Answer</button>
+            </div>
+          </div>
+
+          <!-- Results Screen -->
+          <div id="resultsScreen" class="results-screen hidden">
+            <h2 class="results-title">Challenge Complete!</h2>
+            <div class="results-score" id="finalScore">0/10</div>
+            
+            <div id="scoreBadge" class="badge"></div>
+
+            <div class="results-details">
+              <div class="result-item">
+                <div class="result-value" id="correctCount">0</div>
+                <div class="result-label">Correct</div>
+              </div>
+              <div class="result-item">
+                <div class="result-value" id="incorrectCount">0</div>
+                <div class="result-label">Incorrect</div>
+              </div>
+              <div class="result-item">
+                <div class="result-value" id="totalScore">0</div>
+                <div class="result-label">Points</div>
+              </div>
+            </div>
+
+            <div class="game-actions">
+              <button class="button button-secondary" onclick="resetGame()">Play Again</button>
+              <button class="button button-primary" onclick="window.open('https://your-website.com/patterns', '_blank')">Explore Patterns</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Feedback Overlay -->
+    <div id="feedbackOverlay" class="feedback-overlay hidden">
+      <div class="feedback-content">
+        <div class="feedback-icon" id="feedbackIcon">✅</div>
+        <h3 class="feedback-title" id="feedbackTitle">Correct!</h3>
+        <div class="feedback-explanation" id="feedbackExplanation"></div>
+        <div class="fun-fact" id="funFactContainer" style="display: none;">
+          <div class="fun-fact-title">Did you know?</div>
+          <div id="funFactText"></div>
+        </div>
+        <button class="button button-primary" onclick="nextQuestion()">Continue</button>
+      </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="helpModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">How to Play</h3>
+          <button class="modal-close" onclick="closeModal('helpModal')">&times;</button>
+        </div>
+        <div class="modal-section">
+          <h4>Game Rules:</h4>
+          <ul>
+            <li>Choose your difficulty level</li>
+            <li>Answer multiple-choice questions about crochet</li>
+            <li>Each correct answer gives you 10 points</li>
+            <li>Learn from explanations and fun facts</li>
+          </ul>
+        </div>
+        <div class="modal-section">
+          <h4>Difficulty Levels:</h4>
+          <ul>
+            <li><strong>Beginner:</strong> Basic stitches and techniques</li>
+            <li><strong>Intermediate:</strong> Pattern reading and advanced stitches</li>
+            <li><strong>Advanced:</strong> Complex techniques and specialized knowledge</li>
+          </ul>
+        </div>
+        <div class="modal-section">
+          <h4>Tips:</h4>
+          <ul>
+            <li>Take your time to read each question carefully</li>
+            <li>Look closely at the images provided</li>
+            <li>Read the explanations to learn new things</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title">Game Information</h3>
+          <button class="modal-close" onclick="closeModal('settingsModal')">&times;</button>
+        </div>
+        <div class="modal-section">
+          <h4>About This Game:</h4>
+          <p>Test your crochet knowledge with questions covering patterns, stitches, techniques, and crochet history.</p>
+        </div>
+        <div class="modal-section">
+          <h4>Question Types:</h4>
+          <ul>
+            <li><strong>Pattern Recognition:</strong> Identify stitches and patterns from images</li>
+            <li><strong>Stitch Naming:</strong> Know your crochet terminology</li>
+            <li><strong>Pattern Completion:</strong> Complete pattern sequences</li>
+          </ul>
+        </div>
+        <div class="modal-section">
+          <h4>Scoring:</h4>
+          <ul>
+            <li>10 points per correct answer</li>
+            <li>No points for incorrect or skipped answers</li>
+            <li>Final score based on total correct answers</li>
+          </ul>
+        </div>
+        <div class="info-box">
+          <p><strong>Version:</strong> 1.0 | <strong>Questions:</strong> 30+ | <strong>Levels:</strong> 3</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Game state
+    let gameState = {
+      currentQuestionIndex: 0,
+      score: 0,
+      correctAnswers: 0,
+      incorrectAnswers: 0,
+      questions: [],
+      selectedDifficulty: 'beginner',
+      selectedAnswerId: null,
+      isLoading: false
+    };
+
+    // Crochet questions database
+    const crochetQuestions = {
+      beginner: [
+        {
+          id: 1,
+          type: "stitch_naming",
+          difficulty: "beginner",
+          title: "Basic Stitch Identification",
+          content: "What stitch is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/single-crochet-stitch.jpg",
+          options: [
+            { id: 1, text: "Single crochet", isCorrect: true },
+            { id: 2, text: "Double crochet", isCorrect: false },
+            { id: 3, text: "Half double crochet", isCorrect: false },
+            { id: 4, text: "Treble crochet", isCorrect: false }
+          ],
+          explanation: "Single crochet is one of the most fundamental stitches in crochet, creating a tight, dense fabric.",
+          funFact: "Single crochet is abbreviated as 'sc' in US patterns and 'dc' in UK patterns!"
+        },
+        {
+          id: 2,
+          type: "pattern_recognition",
+          difficulty: "beginner",
+          title: "Yarn Weight",
+          content: "What type of yarn weight is shown with these crochet hooks?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Crochet-hooks-with-a-worsted-weight-yarn.jpg",
+          options: [
+            { id: 1, text: "Worsted weight (4)", isCorrect: true },
+            { id: 2, text: "Fingering weight (1)", isCorrect: false },
+            { id: 3, text: "Bulky weight (5)", isCorrect: false },
+            { id: 4, text: "Lace weight (0)", isCorrect: false }
+          ],
+          explanation: "Worsted weight yarn is perfect for beginners because it's easy to see stitches and comfortable to work with.",
+          funFact: "Worsted weight yarn gets its name from the English village of Worstead, known for its wool production!"
+        },
+        {
+          id: 3,
+          type: "technique_identification",
+          difficulty: "beginner",
+          title: "Starting Technique",
+          content: "What technique is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Magic-ring.jpg",
+          options: [
+            { id: 1, text: "Magic ring", isCorrect: true },
+            { id: 2, text: "Foundation chain", isCorrect: false },
+            { id: 3, text: "Slip knot", isCorrect: false },
+            { id: 4, text: "Chain space", isCorrect: false }
+          ],
+          explanation: "A magic ring (or magic circle) is used to start projects worked in the round, creating a tight center.",
+          funFact: "The magic ring technique allows you to close the center hole completely, perfect for amigurumi!"
+        },
+        {
+          id: 4,
+          type: "stitch_pattern",
+          difficulty: "beginner",
+          title: "Stitch Pattern Recognition",
+          content: "What stitch pattern is demonstrated in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Shell-Stitch-pattern-close-up.jpg",
+          options: [
+            { id: 1, text: "Shell stitch", isCorrect: true },
+            { id: 2, text: "Granny stitch", isCorrect: false },
+            { id: 3, text: "V-stitch", isCorrect: false },
+            { id: 4, text: "Cluster stitch", isCorrect: false }
+          ],
+          explanation: "Shell stitch creates fan-like groups of stitches, typically 5-7 double crochets worked into the same space.",
+          funFact: "Shell stitch is one of the most popular decorative stitches and appears in countless vintage patterns!"
+        },
+        {
+          id: 5,
+          type: "technique_identification",
+          difficulty: "beginner",
+          title: "Shaping Technique",
+          content: "What shaping technique is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/single-crochet-increase.jpg",
+          options: [
+            { id: 1, text: "Increase (2 sc in same stitch)", isCorrect: true },
+            { id: 2, text: "Decrease", isCorrect: false },
+            { id: 3, text: "Front post stitch", isCorrect: false },
+            { id: 4, text: "Back post stitch", isCorrect: false }
+          ],
+          explanation: "An increase is made by working two or more stitches into the same stitch or space, expanding the fabric.",
+          funFact: "Increases and decreases are essential for shaping amigurumi and creating fitted garments!"
+        },
+        {
+          id: 6,
+          type: "technique_identification",
+          difficulty: "beginner",
+          title: "Shaping Technique",
+          content: "What technique is demonstrated in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/single-crochet-decrease.jpg",
+          options: [
+            { id: 1, text: "Single crochet decrease", isCorrect: true },
+            { id: 2, text: "Single crochet increase", isCorrect: false },
+            { id: 3, text: "Invisible decrease", isCorrect: false },
+            { id: 4, text: "Chain decrease", isCorrect: false }
+          ],
+          explanation: "A single crochet decrease combines two stitches into one, reducing the stitch count and shaping the fabric.",
+          funFact: "The decrease technique is crucial for creating the rounded shapes in amigurumi!"
+        },
+        {
+          id: 7,
+          type: "stitch_pattern",
+          difficulty: "beginner",
+          title: "V-Stitch Pattern",
+          content: "What stitch pattern is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/V-stitch.jpg",
+          options: [
+            { id: 1, text: "V-stitch", isCorrect: true },
+            { id: 2, text: "Shell stitch", isCorrect: false },
+            { id: 3, text: "Fan stitch", isCorrect: false },
+            { id: 4, text: "Cluster stitch", isCorrect: false }
+          ],
+          explanation: "V-stitch is made by working (dc, ch 1, dc) all in the same stitch or space, creating a V shape.",
+          funFact: "V-stitch is perfect for creating lacy, open fabrics and is often used in shawls and scarves!"
+        },
+        {
+          id: 8,
+          type: "technique_identification",
+          difficulty: "beginner",
+          title: "Basic Technique",
+          content: "What fundamental crochet technique is being demonstrated?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Yarn-over-demonstration.jpg",
+          options: [
+            { id: 1, text: "Yarn over", isCorrect: true },
+            { id: 2, text: "Chain stitch", isCorrect: false },
+            { id: 3, text: "Slip stitch", isCorrect: false },
+            { id: 4, text: "Single crochet", isCorrect: false }
+          ],
+          explanation: "Yarn over is the basic motion of wrapping yarn around the hook, fundamental to all crochet stitches.",
+          funFact: "The yarn over technique is what creates the height in different crochet stitches!"
+        },
+        {
+          id: 9,
+          type: "texture_pattern",
+          difficulty: "beginner",
+          title: "Texture Technique",
+          content: "What technique creates this ribbed texture?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Back-Loop-Only-Single-Crochet-ribbing-texture.jpg",
+          options: [
+            { id: 1, text: "Back loop only single crochet", isCorrect: true },
+            { id: 2, text: "Front loop only single crochet", isCorrect: false },
+            { id: 3, text: "Both loops single crochet", isCorrect: false },
+            { id: 4, text: "Post stitches", isCorrect: false }
+          ],
+          explanation: "Working in the back loop only creates horizontal ridges that resemble knitted ribbing.",
+          funFact: "Back loop only stitches create a stretchy fabric that's perfect for hat brims and cuffs!"
+        },
+        {
+          id: 10,
+          type: "tool_identification",
+          difficulty: "beginner",
+          title: "Finishing Tool",
+          content: "What tool is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/tapestry-needle.jpg",
+          options: [
+            { id: 1, text: "Tapestry needle", isCorrect: true },
+            { id: 2, text: "Crochet hook", isCorrect: false },
+            { id: 3, text: "Stitch marker", isCorrect: false },
+            { id: 4, text: "Row counter", isCorrect: false }
+          ],
+          explanation: "A tapestry needle has a blunt tip and large eye, perfect for weaving in ends and sewing pieces together.",
+          funFact: "Tapestry needles are also called yarn needles and are essential for finishing any crochet project!"
+        }
+      ],
+      intermediate: [
+        {
+          id: 11,
+          type: "stitch_pattern",
+          difficulty: "intermediate",
+          title: "Textured Stitch Pattern",
+          content: "What stitch pattern is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Waffle-stitch.jpg",
+          options: [
+            { id: 1, text: "Waffle stitch", isCorrect: true },
+            { id: 2, text: "Bobble stitch", isCorrect: false },
+            { id: 3, text: "Popcorn stitch", isCorrect: false },
+            { id: 4, text: "Puff stitch", isCorrect: false }
+          ],
+          explanation: "Waffle stitch creates a three-dimensional textured pattern that resembles a waffle, using front post and back post double crochets.",
+          funFact: "Waffle stitch is perfect for blankets and dishcloths because of its absorbent texture!"
+        },
+        {
+          id: 12,
+          type: "stitch_pattern",
+          difficulty: "intermediate",
+          title: "Cluster Stitch",
+          content: "What type of stitch grouping is demonstrated in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Cluster-stitch-examples.jpg",
+          options: [
+            { id: 1, text: "Cluster stitch", isCorrect: true },
+            { id: 2, text: "Shell stitch", isCorrect: false },
+            { id: 3, text: "Bobble stitch", isCorrect: false },
+            { id: 4, text: "Popcorn stitch", isCorrect: false }
+          ],
+          explanation: "Cluster stitches group multiple incomplete stitches together, creating texture and reducing stitch count.",
+          funFact: "Clusters are perfect for creating decrease shaping while maintaining a decorative element!"
+        },
+        {
+          id: 13,
+          type: "technique_identification",
+          difficulty: "intermediate",
+          title: "Color Changing",
+          content: "What technique is being demonstrated in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Color-changing-technique-in-progress.jpg",
+          options: [
+            { id: 1, text: "Color changing mid-row", isCorrect: true },
+            { id: 2, text: "Intarsia technique", isCorrect: false },
+            { id: 3, text: "Tapestry crochet", isCorrect: false },
+            { id: 4, text: "Mosaic crochet", isCorrect: false }
+          ],
+          explanation: "Proper color changing involves completing the last yarn over of a stitch with the new color for clean transitions.",
+          funFact: "Clean color changes are essential for sharp stripes and colorwork patterns!"
+        },
+        {
+          id: 14,
+          type: "measurement_technique",
+          difficulty: "intermediate",
+          title: "Project Planning",
+          content: "What is shown in this image and why is it important?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Gauge-swatch-with-ruler.jpg",
+          options: [
+            { id: 1, text: "Gauge swatch for measuring tension", isCorrect: true },
+            { id: 2, text: "Practice square for beginners", isCorrect: false },
+            { id: 3, text: "Color sample for matching", isCorrect: false },
+            { id: 4, text: "Stitch pattern sample", isCorrect: false }
+          ],
+          explanation: "A gauge swatch helps ensure your finished project will be the correct size by checking your tension against the pattern.",
+          funFact: "Making a gauge swatch can save hours of frogging (ripping out) if your tension is off!"
+        },
+        {
+          id: 15,
+          type: "advanced_technique",
+          difficulty: "intermediate",
+          title: "Joining Method",
+          content: "What advanced joining technique is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Join-As-You-Go-JAYG-technique-between-motifs.jpg",
+          options: [
+            { id: 1, text: "Join As You Go (JAYG)", isCorrect: true },
+            { id: 2, text: "Whip stitch joining", isCorrect: false },
+            { id: 3, text: "Slip stitch joining", isCorrect: false },
+            { id: 4, text: "Mattress stitch joining", isCorrect: false }
+          ],
+          explanation: "Join As You Go allows you to connect motifs while crocheting them, eliminating the need for sewing later.",
+          funFact: "JAYG saves tons of time on large projects like afghans made from granny squares!"
+        },
+        {
+          id: 16,
+          type: "decorative_stitch",
+          difficulty: "intermediate",
+          title: "Edging Technique",
+          content: "What type of decorative edging is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Crab-stitch.jpg",
+          options: [
+            { id: 1, text: "Crab stitch (reverse single crochet)", isCorrect: true },
+            { id: 2, text: "Picot edging", isCorrect: false },
+            { id: 3, text: "Shell edging", isCorrect: false },
+            { id: 4, text: "Scallop edging", isCorrect: false }
+          ],
+          explanation: "Crab stitch is worked from left to right (opposite of normal crochet) creating a rope-like decorative edge.",
+          funFact: "Crab stitch is also called reverse single crochet and adds a professional finish to any project!"
+        },
+        {
+          id: 17,
+          type: "stitch_variation",
+          difficulty: "intermediate",
+          title: "V-Stitch Variation",
+          content: "What variation of V-stitch is demonstrated in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Double-crochet-V-stitch.jpg",
+          options: [
+            { id: 1, text: "Double crochet V-stitch", isCorrect: true },
+            { id: 2, text: "Half double crochet V-stitch", isCorrect: false },
+            { id: 3, text: "Treble crochet V-stitch", isCorrect: false },
+            { id: 4, text: "Single crochet V-stitch", isCorrect: false }
+          ],
+          explanation: "Double crochet V-stitch creates larger, more open spaces than single crochet versions, perfect for lacy patterns.",
+          funFact: "Different stitch heights in V-stitches create varying degrees of openness in your fabric!"
+        },
+        {
+          id: 18,
+          type: "specialty_technique",
+          difficulty: "intermediate",
+          title: "Openwork Pattern",
+          content: "What type of crochet technique is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Filet-crochet-pattern.jpg",
+          options: [
+            { id: 1, text: "Filet crochet", isCorrect: true },
+            { id: 2, text: "Tunisian crochet", isCorrect: false },
+            { id: 3, text: "Irish crochet", isCorrect: false },
+            { id: 4, text: "Tapestry crochet", isCorrect: false }
+          ],
+          explanation: "Filet crochet uses a grid of chains and double crochets to create patterns, often featuring charts and pictorial designs.",
+          funFact: "Filet crochet was especially popular in the early 1900s for creating curtains and table runners!"
+        },
+        {
+          id: 19,
+          type: "loop_technique",
+          difficulty: "intermediate",
+          title: "Loop Technique",
+          content: "What specialized technique is being demonstrated?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Front-Loop-Only-Double-Crochet-FLDC-work.jpg",
+          options: [
+            { id: 1, text: "Front loop only double crochet", isCorrect: true },
+            { id: 2, text: "Back loop only double crochet", isCorrect: false },
+            { id: 3, text: "Through both loops double crochet", isCorrect: false },
+            { id: 4, text: "Around the post double crochet", isCorrect: false }
+          ],
+          explanation: "Working in the front loop only creates a ridge effect and leaves the back loops available for additional design elements.",
+          funFact: "Front loop only techniques can create interesting textural effects and are great for adding surface details later!"
+        },
+        {
+          id: 20,
+          type: "measurement_tool",
+          difficulty: "intermediate",
+          title: "Project Measurement",
+          content: "What measuring technique is being used in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Gauge-swatch-with-simple-ruler.jpg",
+          options: [
+            { id: 1, text: "Measuring gauge with a ruler", isCorrect: true },
+            { id: 2, text: "Measuring finished project dimensions", isCorrect: false },
+            { id: 3, text: "Checking stitch pattern repeat", isCorrect: false },
+            { id: 4, text: "Measuring yarn consumption", isCorrect: false }
+          ],
+          explanation: "Using a ruler to measure gauge helps ensure your project will match the pattern's intended size.",
+          funFact: "Gauge rulers specifically designed for crochet have windows that make counting stitches easier!"
+        }
+      ],
+      advanced: [
+        {
+          id: 21,
+          type: "colorwork_technique",
+          difficulty: "advanced",
+          title: "Complex Colorwork",
+          content: "What advanced colorwork technique is demonstrated in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Intarsia-color-work-vertical-stripes.jpg",
+          options: [
+            { id: 1, text: "Intarsia colorwork", isCorrect: true },
+            { id: 2, text: "Tapestry crochet", isCorrect: false },
+            { id: 3, text: "Mosaic crochet", isCorrect: false },
+            { id: 4, text: "Fair Isle crochet", isCorrect: false }
+          ],
+          explanation: "Intarsia creates distinct color blocks by changing colors mid-row, with each color section worked separately.",
+          funFact: "Intarsia comes from an Italian decorative art form using inlaid wood or stone!"
+        },
+        {
+          id: 22,
+          type: "specialty_stitch",
+          difficulty: "advanced",
+          title: "Decorative Stitch",
+          content: "What distinctive stitch creates the scale-like texture shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Crocodile-stitch.jpg",
+          options: [
+            { id: 1, text: "Crocodile stitch", isCorrect: true },
+            { id: 2, text: "Dragon scale stitch", isCorrect: false },
+            { id: 3, text: "Petal stitch", isCorrect: false },
+            { id: 4, text: "Leaf stitch", isCorrect: false }
+          ],
+          explanation: "Crocodile stitch creates overlapping 'scales' that look like crocodile skin, perfect for dragon tails or mermaid projects.",
+          funFact: "The crocodile stitch was popularized in the 2010s and quickly became a favorite for fantasy-themed projects!"
+        },
+        {
+          id: 23,
+          type: "specialized_technique",
+          difficulty: "advanced",
+          title: "Specialty Crochet Form",
+          content: "What specialized crochet technique is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Tunisian-crochet-with-special-hook.jpg",
+          options: [
+            { id: 1, text: "Tunisian crochet", isCorrect: true },
+            { id: 2, text: "Broomstick lace", isCorrect: false },
+            { id: 3, text: "Hairpin lace", isCorrect: false },
+            { id: 4, text: "Filet crochet", isCorrect: false }
+          ],
+          explanation: "Tunisian crochet uses a long hook and works stitches in two passes: forward and return, creating a fabric similar to knitting.",
+          funFact: "Tunisian crochet is also known as 'Afghan stitch' and creates less curling than regular crochet!"
+        },
+        {
+          id: 24,
+          type: "lace_technique",
+          difficulty: "advanced",
+          title: "Traditional Lace Form",
+          content: "What traditional crochet lace technique is demonstrated in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Irish-Crochet-Lace-motifs-and-joining.jpg",
+          options: [
+            { id: 1, text: "Irish crochet lace", isCorrect: true },
+            { id: 2, text: "Bruges lace", isCorrect: false },
+            { id: 3, text: "Romanian lace", isCorrect: false },
+            { id: 4, text: "Filet lace", isCorrect: false }
+          ],
+          explanation: "Irish crochet lace features three-dimensional motifs that are crocheted separately and then joined with mesh backgrounds.",
+          funFact: "Irish crochet lace developed during the Irish famine as a way for women to earn income from home!"
+        },
+        {
+          id: 25,
+          type: "specialized_tool",
+          difficulty: "advanced",
+          title: "Specialty Tool Technique",
+          content: "What technique requires the specialized tool shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Hairpin-lace-in-progress-or-completed.jpg",
+          options: [
+            { id: 1, text: "Hairpin lace", isCorrect: true },
+            { id: 2, text: "Broomstick lace", isCorrect: false },
+            { id: 3, text: "Tunisian crochet", isCorrect: false },
+            { id: 4, text: "Double-ended crochet", isCorrect: false }
+          ],
+          explanation: "Hairpin lace uses a special hairpin loom to create strips of lace with loops that can be joined in various ways.",
+          funFact: "Hairpin lace got its name because early versions were made using actual hairpins as the loom!"
+        },
+        {
+          id: 26,
+          type: "complex_stitch",
+          difficulty: "advanced",
+          title: "Advanced Stitch Technique",
+          content: "What complex stitch technique is shown in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Crochet-bullion-stitch.jpg",
+          options: [
+            { id: 1, text: "Bullion stitch", isCorrect: true },
+            { id: 2, text: "French knot stitch", isCorrect: false },
+            { id: 3, text: "Seed stitch", isCorrect: false },
+            { id: 4, text: "Loop stitch", isCorrect: false }
+          ],
+          explanation: "Bullion stitch involves wrapping yarn multiple times around the hook before completing the stitch, creating a coiled effect.",
+          funFact: "Bullion stitches can be tricky to master but create beautiful dimensional effects in flower petals and leaves!"
+        },
+        {
+          id: 27,
+          type: "surface_technique",
+          difficulty: "advanced",
+          title: "Surface Design",
+          content: "What advanced surface technique is demonstrated in this image?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Overlay-surface-crochet.jpg",
+          options: [
+            { id: 1, text: "Surface crochet overlay", isCorrect: true },
+            { id: 2, text: "Embroidered surface", isCorrect: false },
+            { id: 3, text: "Appliqué technique", isCorrect: false },
+            { id: 4, text: "Cross-stitch overlay", isCorrect: false }
+          ],
+          explanation: "Surface crochet involves working stitches on top of completed fabric to add decorative elements and texture.",
+          funFact: "Surface crochet can transform a simple fabric into an intricate design without adding bulk!"
+        },
+        {
+          id: 28,
+          type: "construction_method",
+          difficulty: "advanced",
+          title: "Garment Construction",
+          content: "What advanced construction method is shown in this sweater?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Top-down-sweater-yoke-construction.jpg",
+          options: [
+            { id: 1, text: "Top-down yoke construction", isCorrect: true },
+            { id: 2, text: "Bottom-up construction", isCorrect: false },
+            { id: 3, text: "Side-to-side construction", isCorrect: false },
+            { id: 4, text: "Modular construction", isCorrect: false }
+          ],
+          explanation: "Top-down construction starts at the neck and works downward, allowing for easy fit adjustments and minimal seaming.",
+          funFact: "Top-down construction lets you try on the sweater as you work and adjust the length perfectly!"
+        },
+        {
+          id: 29,
+          type: "finishing_technique",
+          difficulty: "advanced",
+          title: "Professional Finishing",
+          content: "What professional finishing technique is being demonstrated?",
+          imageUrl: "https://www.stylishknitting.com/wp-content/uploads/2025/05/Wet-blocking-of-lace-with-pins.jpg",
+          options: [
+            { id: 1, text: "Wet blocking with pins", isCorrect: true },
+            { id: 2, text: "Steam blocking", isCorrect: false },
+            { id: 3, text: "Spray blocking", isCorrect: false },
+            { id: 4, text: "Press blocking", isCorrect: false }
+          ],
+          explanation: "Wet blocking involves soaking the piece and pinning it to measurements while damp, creating crisp, professional results.",
+          funFact: "Proper blocking can make the difference between a homemade look and a professional finish!"
+        }
+      ]
+    };
+
+    // Fun facts that appear after answering questions
+    const crochetFunFacts = [
+      "Crochet hooks were originally made from bone, wood, or ivory!",
+      "The word 'crochet' comes from the French word 'croche' meaning hook.",
+      "Queen Victoria was an avid crocheter and helped popularize the craft.",
+      "The first crochet patterns were published in the 1840s.",
+      "Amigurumi originated in Japan and means 'knitted stuffed toy'.",
+      "The Guinness World Record for largest crochet blanket is over 17,000 square feet!",
+      "Crochet was originally called 'French knitting' in England.",
+      "The oldest known crochet samples date back to the 19th century.",
+      "Tunisian crochet is also known as 'Afghan stitch'.",
+      "Steel crochet hooks can be as small as 0.4mm for delicate lacework!"
+    ];
+
+    // Initialize game
+    function initGame() {
+      setupDifficultyButtons();
+      showScreen('welcomeScreen');
+    }
+
+    // Setup difficulty button selection
+    function setupDifficultyButtons() {
+      const buttons = document.querySelectorAll('.difficulty-button');
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          buttons.forEach(b => b.classList.remove('selected'));
+          button.classList.add('selected');
+          gameState.selectedDifficulty = button.dataset.difficulty;
+        });
+      });
+    }
+
+    // Start the game
+    function startGame() {
+      if (gameState.isLoading) return;
+      
+      gameState.isLoading = true;
+      document.getElementById('startButtonText').innerHTML = '<span class="spinner"></span> Loading...';
+      
+      // Simulate loading time
+      setTimeout(() => {
+        resetGameState();
+        loadQuestions();
+        showScreen('gameScreen');
+        displayCurrentQuestion();
+        gameState.isLoading = false;
+        document.getElementById('startButtonText').textContent = 'Start Challenge';
+      }, 1000);
+    }
+
+    // Reset game state
+    function resetGameState() {
+      gameState.currentQuestionIndex = 0;
+      gameState.score = 0;
+      gameState.correctAnswers = 0;
+      gameState.incorrectAnswers = 0;
+      gameState.selectedAnswerId = null;
+      gameState.questions = [];
+    }
+
+    // Load questions based on difficulty
+    function loadQuestions() {
+      const difficultyQuestions = crochetQuestions[gameState.selectedDifficulty] || [];
+      gameState.questions = shuffleArray([...difficultyQuestions]).slice(0, 10);
+    }
+
+    // Shuffle array utility
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Display current question
+    function displayCurrentQuestion() {
+      const question = gameState.questions[gameState.currentQuestionIndex];
+      if (!question) return;
+
+      // Update progress
+      const progress = ((gameState.currentQuestionIndex + 1) / gameState.questions.length) * 100;
+      document.getElementById('progressFill').style.width = progress + '%';
+
+      // Update question info
+      document.getElementById('questionNumber').textContent = 
+        `Question ${gameState.currentQuestionIndex + 1} of ${gameState.questions.length}`;
+      document.getElementById('gameScore').textContent = `Score: ${gameState.score}`;
+
+      // Update question content
+      document.getElementById('questionTitle').textContent = question.title;
+      document.getElementById('questionText').textContent = question.content;
+
+      // Handle image
+      const imageElement = document.getElementById('questionImage');
+      if (question.imageUrl) {
+        imageElement.src = question.imageUrl;
+        imageElement.style.display = 'block';
+      } else {
+        imageElement.style.display = 'none';
+      }
+
+      // Display options
+      displayOptions(question.options);
+
+      // Reset selection
+      gameState.selectedAnswerId = null;
+      document.getElementById('submitButton').disabled = true;
+    }
+
+    // Display answer options
+    function displayOptions(options) {
+      const container = document.getElementById('optionsContainer');
+      container.innerHTML = '';
+
+      options.forEach(option => {
+        const optionElement = document.createElement('div');
+        optionElement.className = 'option';
+        optionElement.textContent = option.text;
+        optionElement.onclick = () => selectOption(option.id);
+        optionElement.dataset.optionId = option.id;
+        container.appendChild(optionElement);
+      });
+    }
+
+    // Select an option
+    function selectOption(optionId) {
+      // Remove previous selection
+      document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+      
+      // Add selection to clicked option
+      document.querySelector(`[data-option-id="${optionId}"]`).classList.add('selected');
+      
+      gameState.selectedAnswerId = optionId;
+      document.getElementById('submitButton').disabled = false;
+    }
+
+    // Submit answer
+    function submitAnswer() {
+      if (gameState.selectedAnswerId === null) return;
+
+      const question = gameState.questions[gameState.currentQuestionIndex];
+      const selectedOption = question.options.find(opt => opt.id === gameState.selectedAnswerId);
+      const isCorrect = selectedOption.isCorrect;
+
+      if (isCorrect) {
+        gameState.score += 10;
+        gameState.correctAnswers++;
+        createConfetti();
+      } else {
+        gameState.incorrectAnswers++;
+      }
+
+      showFeedback(isCorrect, question);
+    }
+
+    // Skip question
+    function skipQuestion() {
+      gameState.incorrectAnswers++;
+      const question = gameState.questions[gameState.currentQuestionIndex];
+      showFeedback(false, question, true);
+    }
+
+    // Show feedback overlay
+    function showFeedback(isCorrect, question, isSkipped = false) {
+      const overlay = document.getElementById('feedbackOverlay');
+      const icon = document.getElementById('feedbackIcon');
+      const title = document.getElementById('feedbackTitle');
+      const explanation = document.getElementById('feedbackExplanation');
+      const funFactContainer = document.getElementById('funFactContainer');
+      const funFactText = document.getElementById('funFactText');
+
+      // Set feedback content
+      if (isSkipped) {
+        icon.textContent = '⏭️';
+        title.textContent = 'Skipped';
+        explanation.textContent = `The correct answer was: ${question.options.find(opt => opt.isCorrect).text}. ${question.explanation}`;
+      } else if (isCorrect) {
+        icon.textContent = '✅';
+        title.textContent = 'Correct!';
+        explanation.textContent = question.explanation;
+      } else {
+        icon.textContent = '❌';
+        title.textContent = 'Incorrect';
+        explanation.textContent = `The correct answer was: ${question.options.find(opt => opt.isCorrect).text}. ${question.explanation}`;
+      }
+
+      // Show fun fact
+      if (question.funFact) {
+        funFactText.textContent = question.funFact;
+        funFactContainer.style.display = 'block';
+      } else {
+        // Show random fun fact
+        const randomFact = crochetFunFacts[Math.floor(Math.random() * crochetFunFacts.length)];
+        funFactText.textContent = randomFact;
+        funFactContainer.style.display = 'block';
+      }
+
+      overlay.classList.remove('hidden');
+    }
+
+    // Continue to next question
+    function nextQuestion() {
+      document.getElementById('feedbackOverlay').classList.add('hidden');
+      
+      gameState.currentQuestionIndex++;
+      
+      if (gameState.currentQuestionIndex >= gameState.questions.length) {
+        showResults();
+      } else {
+        displayCurrentQuestion();
+      }
+    }
+
+    // Show results screen
+    function showResults() {
+      const totalQuestions = gameState.questions.length;
+      const percentage = Math.round((gameState.correctAnswers / totalQuestions) * 100);
+      
+      document.getElementById('finalScore').textContent = `${gameState.correctAnswers}/${totalQuestions}`;
+      document.getElementById('correctCount').textContent = gameState.correctAnswers;
+      document.getElementById('incorrectCount').textContent = gameState.incorrectAnswers;
+      document.getElementById('totalScore').textContent = gameState.score;
+
+      // Set badge
+      const badge = document.getElementById('scoreBadge');
+      if (percentage >= 80) {
+        badge.textContent = 'Excellent!';
+        badge.className = 'badge badge-excellent';
+      } else if (percentage >= 60) {
+        badge.textContent = 'Good Job!';
+        badge.className = 'badge badge-good';
+      } else {
+        badge.textContent = 'Keep Practicing!';
+        badge.className = 'badge badge-fair';
+      }
+
+      showScreen('resultsScreen');
+    }
+
+    // Reset game
+    function resetGame() {
+      showScreen('welcomeScreen');
+    }
+
+    // Show specific screen
+    function showScreen(screenId) {
+      document.querySelectorAll('.welcome-screen, .game-screen, .results-screen').forEach(screen => {
+        screen.classList.add('hidden');
+      });
+      document.getElementById(screenId).classList.remove('hidden');
+    }
+
+    // Create confetti animation
+    function createConfetti() {
+      const colors = ['#8B5FBF', '#D98CB3', '#F2C94C', '#56CCF2', '#6FCF97'];
+      
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.animationDelay = Math.random() * 3000 + 'ms';
+        confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        
+        document.body.appendChild(confetti);
+        
+        setTimeout(() => {
+          confetti.remove();
+        }, 5000);
+      }
+    }
+
+    // Modal functions
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('show');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('show');
+    }
+
+    // Close modal when clicking outside
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal')) {
+        e.target.classList.remove('show');
+      }
+    });
+
+    // Initialize the game when page loads
+    document.addEventListener('DOMContentLoaded', initGame);
+  </script>
+</body>
+</html>
