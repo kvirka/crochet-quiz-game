@@ -1360,9 +1360,28 @@
     }
 
     // Load questions based on difficulty
+        // Load questions based on difficulty
     function loadQuestions() {
-      const difficultyQuestions = crochetQuestions[gameState.selectedDifficulty] || [];
-      gameState.questions = shuffleArray([...difficultyQuestions]).slice(0, 10);
+      const allDifficultyQuestions = crochetQuestions[gameState.selectedDifficulty] || [];
+      
+      // 1. Shuffle all available questions for the selected difficulty to get a random set of questions.
+      //    We use [...allDifficultyQuestions] to create a copy so the original array isn't modified.
+      const shuffledAllDifficultyQuestions = shuffleArray([...allDifficultyQuestions]);
+      
+      // 2. Take the first 10 questions for the game (or fewer if not enough are available).
+      //    These are still references to the original question objects (or copies if allDifficultyQuestions was already a copy).
+      const gameQuestionsSource = shuffledAllDifficultyQuestions.slice(0, 10);
+
+      // 3. For each selected question, create a new question object for the game state.
+      //    Crucially, shuffle its options array. This ensures that:
+      //    a) The original `crochetQuestions` data (where the correct answer is first) remains unchanged.
+      //    b) Each game session gets freshly shuffled options.
+      gameState.questions = gameQuestionsSource.map(questionSource => {
+        return {
+          ...questionSource, // Copy all properties from the source question (id, title, content, etc.)
+          options: shuffleArray([...questionSource.options]) // Create a new, shuffled array of options
+        };
+      });
     }
 
     // Shuffle array utility
